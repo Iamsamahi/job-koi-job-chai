@@ -17,9 +17,10 @@ def getAllJobs(request):
 
     filterset = JobsFilter(request.GET , queryset=Job.objects.all().order_by('id')) 
     count = filterset.qs.count()
-    #Pagination
+    
+     #Pagination
     resPerPage =3  
-    paginator = PageNumberPagination()
+    paginator = PageNumberPagination()  
     paginator.page_size = resPerPage
     queryset = paginator.paginate_queryset(filterset.qs,request)
 
@@ -29,6 +30,7 @@ def getAllJobs(request):
             "resPerPage" : resPerPage ,
             'jobs' : serializer.data 
     })
+   
 
 @api_view(['GET']) 
 def getJob(request , pk): 
