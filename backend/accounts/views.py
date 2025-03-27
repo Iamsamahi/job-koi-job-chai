@@ -89,7 +89,7 @@ def uploadResume(request):
     if not isValidFile:
         return Response({'error' : 'File type not supported. Please upload a PDF file.'})
 
-
+    
 
 
     
