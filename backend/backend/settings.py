@@ -1,20 +1,24 @@
 from pathlib import Path
 import os
-import dotenv
+from dotenv import load_dotenv  # Updated import
 from datetime import timedelta
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables
-dotenv.read_dotenv()
+load_dotenv()  # Replace read_dotenv() with load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1' ,'localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -25,10 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', 
     'rest_framework',
-    'corsheaders',
-    'storages',
+    'corsheaders',                 
     'django.contrib.gis',
     'django_filters',
 ]
@@ -85,6 +88,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Django Rest Framework
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler', 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
@@ -103,8 +107,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -112,3 +115,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # GIS Library Paths
 GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
+
+#Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For collectstatic in production
+
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
+
+# Optional: Ensure the media directory exists in development
+if not os.path.exists(MEDIA_ROOT):
+    os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+
+
+
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
