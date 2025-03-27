@@ -132,3 +132,6 @@ if not os.path.exists(MEDIA_ROOT):
 
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
+
+handler404 = 'utils.error_views.handler404'
+handler500 = 'utils.error_views.handler500'
