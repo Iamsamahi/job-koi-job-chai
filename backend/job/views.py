@@ -1,6 +1,7 @@
+from datetime import timezone
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from .models import Job
+from rest_framework.decorators import api_view , permission_classes
+from .models import Job ,CandidatesApplied
 from .serializers import JobSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -8,6 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg , Min , Max , Count
 from .filters import JobsFilter
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -39,15 +41,22 @@ def getJob(request , pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def newJob(request):
+    request.data['user'] = request.user
     data = request.data 
     job = Job.objects.create(**data)
     serializer = JobSerializer(job , many =False)
     return Response(serializer.data)
 
 @api_view(['PUT']) 
+@permission_classes([IsAuthenticated])
 def updateJob(request , pk): 
     job = get_object_or_404(Job , id=pk)
+
+    if job.user != request.user: 
+        return Response({ 'message' : 'You cannot update this job'}, status=status.HTTP_403_FORBIDDEN)
+
     if 'title' in request.data:
         job.title = request.data['title']
     if 'description' in request.data:
@@ -77,12 +86,13 @@ def updateJob(request , pk):
     return Response(serializer.data)
 
 @api_view(['DELETE']) 
+@permission_classes([IsAuthenticated])
 def deleteJob(request , pk):
     job = get_object_or_404(Job , id = pk)
 
     if job.user != request.user: 
+
         return Response({ 'message' : 'You cannot delete this job'}, status=status.HTTP_403_FORBIDDEN)
-    
     job.delete()
     return Response({'message' : 'Job is deleted Successfully.'}, status=status.HTTP_200_OK)    
 
@@ -104,3 +114,38 @@ def getTopicStats(request ,topic):
     )
 
     return Response (stats)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def applyToJob(request , pk): 
+    job = get_object_or_404(Job , id=pk)
+    user = request.user
+
+    if user.profile.resume == None:
+        return Response({'message' : 'Please upload your resume'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if job.lastDate < timezone.now().date():
+        return Response({'message' : 'Last date to apply has passed.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    alreadyApplied = job.candidatesapplied_set.filter(user=user).exists()
+    if alreadyApplied: 
+        return Response({'message' : 'You have already applied for this job'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    if job.user == user: 
+        return Response({'message' : 'You cannot apply for your own job'}, status=status.HTTP_403_FORBIDDEN)
+
+    if job.positions <= 0: 
+        return Response({'message' : 'No positions available'}, status=status.HTTP_400_BAD_REQUEST)
+
+    jobApplied = CandidatesApplied.objects.create(
+        job = job,
+        user = user,
+        resume = user.profile.resume
+    )
+
+    return Response(
+        {
+            'applied' : True,
+            'job_id' : jobApplied.id,       
+         }, status=status.HTTP_200_OK)
