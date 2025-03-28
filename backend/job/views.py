@@ -1,6 +1,9 @@
+from datetime import timezone
 from django.shortcuts import render
 from rest_framework.decorators import api_view , permission_classes
-from .models import Job
+<<<<<<< HEAD
+from .models import Job ,CandidatesApplied
+>>>>>>> job
 from .serializers import JobSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -113,3 +116,39 @@ def getTopicStats(request ,topic):
     )
 
     return Response (stats)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def applyToJob(request , pk): 
+    job = get_object_or_404(Job , id=pk)
+    user = request.user
+
+    if user.profile.resume == None:
+        return Response({'message' : 'Please upload your resume'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if job.lastDate < timezone.now().date():
+        return Response({'message' : 'Last date to apply has passed.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    alreadyApplied = job.candidatesapplied_set.filter(user=user).exists()
+    if alreadyApplied: 
+        return Response({'message' : 'You have already applied for this job'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    if job.user == user: 
+        return Response({'message' : 'You cannot apply for your own job'}, status=status.HTTP_403_FORBIDDEN)
+
+    if job.positions <= 0: 
+        return Response({'message' : 'No positions available'}, status=status.HTTP_400_BAD_REQUEST)
+
+    jobApplied = CandidatesApplied.objects.create(
+        job = job,
+        user = user,
+        resume = user.profile.resume
+    )
+
+    return Response(
+        {
+            'applied' : True,
+            'job_id' : jobApplied.id,       
+         }, status=status.HTTP_200_OK)
+>>>>>>> job
