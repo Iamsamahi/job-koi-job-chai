@@ -1,5 +1,4 @@
 # Ignore the virtual environment directory
 env/
-
-# Ignore the specific .env file
-backend/.env
+__pycache__/
+*.pyc

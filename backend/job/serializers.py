@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Job
+from .models import Job , CandidatesApplied
 from datetime import datetime
 
 class JobSerializer(serializers.ModelSerializer):
@@ -33,3 +33,10 @@ class JobSerializer(serializers.ModelSerializer):
             del data['formatted_last_date']  # Remove the custom field
 
         return super().to_internal_value(data)
+    
+class CandidatesAppliedSerializer(serializers.ModelSerializer):
+
+    job = JobSerializer()
+    class Meta: 
+        model = CandidatesApplied 
+        fields = ['job' , 'user' , 'appliedAt' , 'resume']

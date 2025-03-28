@@ -18,9 +18,10 @@ def getAllJobs(request):
 
     filterset = JobsFilter(request.GET , queryset=Job.objects.all().order_by('id')) 
     count = filterset.qs.count()
-    #Pagination
+    
+     #Pagination
     resPerPage =3  
-    paginator = PageNumberPagination()
+    paginator = PageNumberPagination()  
     paginator.page_size = resPerPage
     queryset = paginator.paginate_queryset(filterset.qs,request)
 
@@ -30,6 +31,7 @@ def getAllJobs(request):
             "resPerPage" : resPerPage ,
             'jobs' : serializer.data 
     })
+   
 
 @api_view(['GET']) 
 def getJob(request , pk): 
@@ -88,8 +90,8 @@ def deleteJob(request , pk):
     job = get_object_or_404(Job , id = pk)
 
     if job.user != request.user: 
-        return Response({ 'message' : 'You cannot update this job'}, status=status.HTTP_403_FORBIDDEN)
-    
+
+        return Response({ 'message' : 'You cannot delete this job'}, status=status.HTTP_403_FORBIDDEN)
     job.delete()
     return Response({'message' : 'Job is deleted Successfully.'}, status=status.HTTP_200_OK)    
 

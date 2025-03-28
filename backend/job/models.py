@@ -60,3 +60,13 @@ def save(self , *args , **kwargs):
     lat = g.lat 
     self.point = Point(lng , lat)
     super(Job , self).save(*args ,**kwargs)
+
+
+class CandidatesApplied(models.Model):
+    job = models.ForeignKey(Job , on_delete=models.CASCADE)
+    user = models.ForeignKey(User , on_delete=models.SET_NULL , null=True)
+    resume = models.CharField(max_length=200 )
+    appliedAt = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + ' Applied for ' + self.job.title
