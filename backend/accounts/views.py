@@ -86,13 +86,9 @@ def uploadResume(request):
         return Response({'error' :'Please upload your resume'})
    
     isValidFile = validate_file_extensions(resume.name)
+
     if not isValidFile:
         return Response({'error' : 'File type not supported. Please upload a PDF file.'})
-
-    
-
-
-    
     
     serializer = UserSerializer(user , many = False)
     
