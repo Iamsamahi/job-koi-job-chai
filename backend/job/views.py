@@ -2,7 +2,7 @@ from datetime import timezone
 from django.shortcuts import render
 from rest_framework.decorators import api_view , permission_classes
 from .models import Job ,CandidatesApplied
-from .serializers import JobSerializer
+from .serializers import JobSerializer , CandidatesAppliedSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -149,3 +149,14 @@ def applyToJob(request , pk):
             'applied' : True,
             'job_id' : jobApplied.id,       
          }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getCurrentAppliedJobs(request): 
+
+    args = {'user_id' : request.user.id}
+    jobs = CandidatesApplied.objects.filter(**args).order_by('-created_at')
+
+    serializer = CandidatesAppliedSerializer(jobs , many = True)
+    return Response(serializer.data)
