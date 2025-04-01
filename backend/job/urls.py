@@ -10,5 +10,6 @@ urlpatterns = [
     path('stats/<str:topic>/' , views.getTopicStats, name='get_topic_stats'),
     path('jobs/<str:pk>/apply/' , views.applyToJob, name='apply_to_job'),
     path('me/jobs/applied/' , views.getCurrentAppliedJobs, name='get_current_applied_jobs'),
-    path('jobs/<str:pk>/isapplied/' , views.isApplied, name='is_applied'),
+    path('jobs/<str:pk>/applied/' , views.isApplied, name='is_applied'),
+    path('me/jobs/' , views.getCurrentUserJobs, name='get_current_user_jobs'),
 ]
