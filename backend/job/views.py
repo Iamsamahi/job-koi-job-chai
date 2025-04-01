@@ -175,3 +175,13 @@ def isApplied(request , pk):
         return Response({'applied' : True}, status=status.HTTP_200_OK)
     
     return Response({'applied' : False}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getCurrentUserJobs(request , pk): 
+    args = {'user_id' : request.user.id}
+    jobs = Job.objects.filter(**args)
+    serializer = JobSerializer(jobs , many = True)
+    return Response(serializer.data)
+
