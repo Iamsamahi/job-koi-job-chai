@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from django.shortcuts import render
 from rest_framework.decorators import api_view , permission_classes
 from .models import Job ,CandidatesApplied
@@ -121,7 +121,7 @@ def applyToJob(request , pk):
     job = get_object_or_404(Job , id=pk)
     user = request.user
 
-    if user.profile.resume == None:
+    if user.userprofile.resume == "":
         return Response({'message' : 'Please upload your resume'}, status=status.HTTP_400_BAD_REQUEST)
 
     if job.lastDate < timezone.now().date():
@@ -141,7 +141,7 @@ def applyToJob(request , pk):
     jobApplied = CandidatesApplied.objects.create(
         job = job,
         user = user,
-        resume = user.profile.resume
+        resume = user.userprofile.resume
     )
 
     return Response(
@@ -156,7 +156,22 @@ def applyToJob(request , pk):
 def getCurrentAppliedJobs(request): 
 
     args = {'user_id' : request.user.id}
-    jobs = CandidatesApplied.objects.filter(**args).order_by('-created_at')
+    jobs = CandidatesApplied.objects.filter(**args).order_by('appliedAt')
 
     serializer = CandidatesAppliedSerializer(jobs , many = True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def isApplied(request , pk): 
+    user = request.user
+    job = get_object_or_404(Job , id=pk)
+   
+
+    alreadyApplied = job.candidatesapplied_set.filter(user=user).exists()
+
+    if alreadyApplied: 
+        return Response({'applied' : True}, status=status.HTTP_200_OK)
+    
+    return Response({'applied' : False}, status=status.HTTP_200_OK)
