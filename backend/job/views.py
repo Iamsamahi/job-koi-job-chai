@@ -156,7 +156,7 @@ def applyToJob(request , pk):
 def getCurrentAppliedJobs(request): 
 
     args = {'user_id' : request.user.id}
-    jobs = CandidatesApplied.objects.filter(**args).order_by('-created_at')
+    jobs = CandidatesApplied.objects.filter(**args).order_by('appliedAt')
 
     serializer = CandidatesAppliedSerializer(jobs , many = True)
     return Response(serializer.data)

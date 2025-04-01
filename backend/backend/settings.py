@@ -7,12 +7,6 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment variables
-load_dotenv()  # Replace read_dotenv() with load_dotenv()
-
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -126,12 +120,6 @@ MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
 # Optional: Ensure the media directory exists in development
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT, exist_ok=True)
-
-
-
-
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
-MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
 
 handler404 = 'utils.error_views.handler404'
 handler500 = 'utils.error_views.handler500'

@@ -1,4 +1,6 @@
 # Ignore the virtual environment directory
 env/
-__pycache__/
+
+
+/ __pycache__/
 *.pyc
