@@ -1,30 +1,56 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import JobItem from './job/JobItem'; // Import with PascalCase
+import JobItem from './job/JobItem';
+import styles from '../styles/Home.module.css'; // Import CSS module
 
-const Home = () => { // Use PascalCase for the component name
+const Home = ({ data }) => {
+  const { jobs, count, resPerPage } = data;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (jobs) {
+      setLoading(false);
+    }
+  }, [jobs]);
+
   return (
-    <div className="container container-fluid">
-      <div className="row">
-        <div className="col-xl-3 col-lg-4">
-          {/* <Filters />{" "} */}
-        </div>
-
-        <div className="col-xl-9 col-lg-8 content-left-offset">
-          <div className="my-5">
-            <h4 className="page-title">Latest Jobs</h4>
-            <Link href="/stats">
-              <button className="btn btn-secondary float-right stats_btn">
-                Get Topic stats
-              </button>
-            </Link>
-            <div className="d-block">
-              <Link href="/search">Go to Search</Link>
+    <div className={styles.container}>
+      <div className={styles.jobSection}>
+        <div className={styles.header}>
+          <div className={styles.titleWrapper}>
+            <h4 className={styles.pageTitle}>Latest Jobs</h4>
+            <div className={styles.searchWrapper}>
+              <Link href="/search" className={styles.searchLink}>
+                Go to Search
+              </Link>
             </div>
           </div>
-          <JobItem /> {/* Use PascalCase */}
-          <JobItem />
+          <div className={styles.actions}>
+            <Link href="/stats">
+              <button className={styles.statsBtn}>Get Topic stats</button>
+            </Link>
+          </div>
         </div>
+
+        {loading ? (
+          <div className="center-loader">
+            <div className="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        ) : jobs && jobs.length > 0 ? (
+          <div className={styles.jobList}>
+            {jobs.map((job) => (
+              <JobItem key={job._id} job={job} />
+            ))}
+          </div>
+        ) : (
+          <p>No jobs available.</p>
+        )}
       </div>
     </div>
   );

@@ -101,7 +101,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+     'https://127.0.0.1:3000'
 
+  ]  # Allow all origins for development
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

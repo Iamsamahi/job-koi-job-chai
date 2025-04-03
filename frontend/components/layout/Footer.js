@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="py-1">
       <p className="text-center mt-1">
-        Jobbee - 2021-2022, All Rights Reserved
+        Job-Koi-Job-Chai : 2024-2025, All Rights Reserved
         <a
           className="ml-4"
           rel="noreferrer"
