@@ -1,38 +1,80 @@
-import React from "react";
-import Link from "next/link";
+// import React from "react";
+// import Link from "next/link";
+// import moment from "moment";
 
-const JobItem = () => {
+// const JobItem = ({job}) => {
+//   return (
+//     <Link href={`/job/${job._id}`}>
+//       <div className="job-listing-details">
+//         <div className="job-listing-description">
+//           <h4 className="job-listing-company">{job.company}</h4>
+//           <h3 className="job-listing-title">{job.title}</h3>
+//           <p className="job-listing-text">
+//          {job.description.substring(0, 250)}...
+//           </p>
+//         </div>
+
+//         <span className="bookmark-icon"></span>
+//       </div>
+
+//       <div className="job-listing-footer">
+//         <ul>
+//           <li>
+//             <i aria-hidden className="fas fa-industry"></i> {job.industry}
+//           </li>
+
+//           <li>
+//             <i aria-hidden className="fas fa-briefcase"></i> {job.jobTyepe}
+//           </li>
+//           <li>
+//             <i aria-hidden className="fas fa-money-check-alt"></i>{job.salary}
+//           </li>
+//           <li>
+//             <i aria-hidden className="far fa-clock"></i> 
+//             {moment.utc(job.createdAt).local().startOf("seconds").fromNow()}
+//           </li>
+//         </ul>
+//       </div>
+//     </Link>
+//   );
+// };
+
+// export default JobItem;
+
+
+// components/job/JobItem.js
+import React from 'react';
+import Link from 'next/link';
+import moment from 'moment';
+
+const JobItem = ({ job }) => {
   return (
-    <Link href="/jobdetail" className="job-listing">
+    <Link href={`/job/${job._id}`} className="job-listing">
       <div className="job-listing-details">
         <div className="job-listing-description">
-          <h4 className="job-listing-company">Tech</h4>
-          <h3 className="job-listing-title">Java Developer required</h3>
+          <h4 className="job-listing-company">{job.company}</h4>
+          <h3 className="job-listing-title">{job.title}</h3>
           <p className="job-listing-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
+            {job.description.substring(0, 250)}...
           </p>
         </div>
-
         <span className="bookmark-icon"></span>
       </div>
 
       <div className="job-listing-footer">
         <ul>
           <li>
-            <i aria-hidden className="fas fa-industry"></i> Business
-          </li>
-
-          <li>
-            <i aria-hidden className="fas fa-briefcase"></i> Permanent
+            <i aria-hidden className="fas fa-industry"></i> {job.industry}
           </li>
           <li>
-            <i aria-hidden className="fas fa-money-check-alt"></i>$50000
+            <i aria-hidden className="fas fa-briefcase"></i> {job.jobType}
           </li>
           <li>
-            <i aria-hidden className="far fa-clock"></i> Post 2 months ago
+            <i aria-hidden className="fas fa-money-check-alt"></i> {job.salary}
+          </li>
+          <li>
+            <i aria-hidden className="far fa-clock"></i>{' '}
+            {moment.utc(job.createdAt).local().startOf('seconds').fromNow()}
           </li>
         </ul>
       </div>
