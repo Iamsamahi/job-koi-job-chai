@@ -12,7 +12,7 @@ export default function Index({ jobs }) {
 
 export async function getServerSideProps() {
   try {
-    const res = await axios.get(`${process.env.API_URL}/api/jobs/`);  // Changed 'job' to 'jobs'
+    const res = await axios.get(`${process.env.API_URL}/api/jobs/`);
     const data = res.data;
     return {
       props: {

@@ -347,7 +347,6 @@ body {
 }
 
 /* Job Details Page */
-
 .job-details-wrapper {
   background: #f5f7fa;
   padding-top: 50px;
@@ -358,43 +357,99 @@ body {
 .job-contact-details {
   background-color: white;
   border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .job-header {
   border: 1px solid #e8e8e8;
   border-radius: 10px;
+  padding: 20px;
 }
 
 .job-header h2 {
   color: rgb(59, 59, 59);
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.job-header span {
+.job-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.job-info .category,
+.job-info .location {
   color: grey;
+  font-size: 1em;
 }
 
-.job-contact-details h5 {
-  color: rgb(144, 144, 144);
+.job-info .apply-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.job-info .apply-btn:hover {
+  background-color: #0056b3;
+}
+
+.job-info .candidates {
+  color: green;
+  font-size: 0.9em;
+}
+
+.description,
+.job-summary,
+.job-contact-details {
+  margin-top: 20px;
+}
+
+.description h3,
+.job-summary h3,
+.job-contact-details h3 {
+  font-size: 1.5em;
+  color: rgb(59, 59, 59);
+  margin-bottom: 10px;
+}
+
+.description p,
+.job-summary p,
+.job-contact-details p {
+  color: rgb(20, 20, 20);
+  line-height: 1.6;
 }
 
 .job-contact-details p {
-  color: rgb(20, 20, 20);
-  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
-.apply-btn {
-  border-radius: 20px;
+.job-contact-details .note {
+  background-color: #ffe6e6;
+  padding: 10px;
+  border-radius: 5px;
+  color: #d9534f;
+  font-size: 0.9em;
 }
 
-/* Footer */
+/* Responsive Design */
+@media (max-width: 768px) {
+  .job-details-wrapper .row {
+    flex-direction: column;
+  }
 
-footer {
-  margin-top: 6rem;
-  color: grey;
-  bottom: 0;
-  width: 100%;
+  .job-details,
+  .job-contact-details {
+    width: 100%;
+  }
 }
-
 /* Pagination */
 
 .page-item.active .page-link {
