@@ -46,6 +46,7 @@ export async function getServerSideProps({ params }) {
 
   try {
     const res = await axios.get(`${process.env.API_URL}/api/jobs/${id}`);
+    console.log("API Response:", res.data);
 
     if (!res.data || !res.data.Job) {
       return { notFound: true };
