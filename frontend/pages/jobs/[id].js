@@ -21,17 +21,9 @@ export default function JobDetailsPage({ job, candidates }) {
     );
   }
 
-  if (!job) {
-    return (
-      <Layout>
-        <h1>Job Not Found</h1>
-        <p>The job you are looking for does not exist.</p>
-      </Layout>
-    );
-  }
 
   return (
-    <Layout>
+    <Layout title={job.title}>
       <JobDetails job={job} candidates={candidates} />
     </Layout>
   );

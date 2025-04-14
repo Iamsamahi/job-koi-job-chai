@@ -10,9 +10,17 @@ export default function Index({ jobs }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(searchQuery) {
+
+  const keyword = searchQuery.query.keyword || '';
+  const location = searchQuery.query.location || '';
+
+  const queryString = `keyword=${keyword}&location=${location}`;
+
+
+
   try {
-    const res = await axios.get(`${process.env.API_URL}/api/jobs/`);
+    const res = await axios.get(`${process.env.API_URL}/api/jobs?${queryString}`);
     const data = res.data;
     return {
       props: {

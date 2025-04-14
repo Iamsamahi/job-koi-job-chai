@@ -2,11 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import JobItem from './job/JobItem';
-import styles from '../styles/Home.module.css'; // Import CSS module
+import styles from '../styles/Home.module.css';
+import { useRouter } from 'next/router';
 
 const Home = ({ data }) => {
   const { jobs, count, resPerPage } = data;
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  let {keyword} = router.query;
 
   useEffect(() => {
     if (jobs) {
@@ -19,7 +23,11 @@ const Home = ({ data }) => {
       <div className={styles.jobSection}>
         <div className={styles.header}>
           <div className={styles.titleWrapper}>
-            <h4 className={styles.pageTitle}>Latest Jobs</h4>
+            <h4 className={styles.pageTitle}>
+              {keyword
+                ? `${jobs.length} Search results for ${keyword}`
+                : 'Latest Jobs'}
+              </h4>
             <div className={styles.searchWrapper}>
               <Link href="/search" className={styles.searchLink}>
                 Go to Search
