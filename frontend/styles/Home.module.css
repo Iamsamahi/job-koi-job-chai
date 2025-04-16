@@ -1,25 +1,77 @@
-/* styles/Home.module.css */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
+.mainLayout {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.filters {
+  flex: 0 0 25%;
+  max-width: 300px;
+  padding: 1rem;
+}
+
+.filters h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.filters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.filters li {
+  margin-bottom: 0.75rem;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filters input[type="checkbox"] {
+  accent-color: #2557a7;
+}
+
+.filters .salaryRange {
+  margin-top: 1rem;
+}
+
+.filters .salaryRange ul {
+  margin-top: 0.5rem;
+}
+
 .jobSection {
+  flex: 1;
+  min-width: 0;
   padding: 1rem 0;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Align items to the top */
+  align-items: flex-start;
   margin-bottom: 2rem;
 }
 
 .titleWrapper {
   display: flex;
-  flex-direction: column; /* Stack title and search link vertically */
-  gap: 0.5rem; /* Add spacing between title and search link */
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .pageTitle {
@@ -29,7 +81,7 @@
 }
 
 .searchWrapper {
-  margin-top: 0.5rem; /* Additional spacing if needed */
+  margin-top: 0.5rem;
 }
 
 .searchLink {
@@ -66,4 +118,61 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 5px 10px;
+  border: 1px solid #2557a7;
+  color: #2557a7;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link:hover {
+  background-color: #e6f0ff;
+  color: #2557a7;
+}
+
+.page-item.active .page-link {
+  background-color: #2557a7;
+  color: white;
+  border-color: #2557a7;
+}
+
+.page-item.disabled .page-link {
+  color: #aaa;
+  border-color: #ddd;
+  background-color: white;
+  cursor: not-allowed; /* Fixed typo: was "cursor:pointer" */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainLayout {
+    flex-direction: column;
+  }
+
+  .filters {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .jobSection {
+    flex: 1;
+  }
 }
