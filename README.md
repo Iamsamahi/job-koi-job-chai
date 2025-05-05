@@ -70,10 +70,10 @@ To get a local copy up and running, follow these simple steps:
 3. Start the development server:
    ```bash
    # Backend
-   python app.py
+   python manage.py runserver
 
    # Frontend
-   npm start
+   npm run dev
    ```
 
 ---
@@ -83,18 +83,10 @@ To get a local copy up and running, follow these simple steps:
 1. Navigate to the project directory.
 2. Run the backend and frontend servers.
 3. Open your browser and visit the application at:
-   ```
-   http://localhost:<PORT>
-   ```
+   
 
 Use the application to browse job listings, search for jobs, and apply directly.
 
-
----
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
