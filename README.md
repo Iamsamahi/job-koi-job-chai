@@ -1,6 +1,3 @@
-Here's a draft for a proper README documentation for your repository:
-
----
 
 # Job Koi Job Chai
 
