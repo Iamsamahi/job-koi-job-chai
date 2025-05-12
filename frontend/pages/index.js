@@ -40,8 +40,7 @@ export default function Index({ initialData }) {
     }
 
     const fullUrl = `${apiUrl}/api/jobs?${queryString}`;
-    console.log('Client-side fetching URL:', fullUrl);
-    console.log('Query Parameters:', { jobType, education, experience, keyword, location, page, min_salary, max_salary });
+
 
     try {
       setIsLoading(true);
