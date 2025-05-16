@@ -15,7 +15,7 @@ const Header = () => {
         <Link href="/">
           <div className="logoWrapper">
             <div className="logoImgWrapper">
-              <Image width="30" height="30" src="/images/logo.png" alt="Logo" />
+              <Image width="30" height="30" src="/frontend/public/images/logo.pngs/logo.png" alt="Logo"/>
             </div>
             <span className="logo1">Job-koi-</span>
             <span className="logo2">job-chai</span>
@@ -48,7 +48,8 @@ const Header = () => {
                 <Link href="/myself/applied" className="dropdown-item">
                   Jobs Applied
                 </Link>
-                <Link href="/myself" className="dropdown-item">
+                <Link href="/myself/profile" className="dropdown-item">
+                
                   Profile
                 </Link>
                 <Link href="/upload/resume" className="dropdown-item">

@@ -2,15 +2,14 @@ import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
-// Create the AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [updated, setUpdated] = useState(null);
   const router = useRouter();
 
   const loadUser = async () => {
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const res = await axios.get('/api/auth/user');
-      console.log('Load user response:', res.data); // Debug log
       if (res.data.user) {
         setIsAuthenticated(true);
         setUser(res.data.user);
@@ -27,7 +25,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
       }
     } catch (err) {
-      console.error('Load user error:', err.message, err.response?.data); // Debug log
       setError(err.response?.data?.error || err.message || 'Failed to load user');
       setIsAuthenticated(false);
       setUser(null);
@@ -37,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    loadUser(); // Load user on mount
+    loadUser();
   }, []);
 
   const login = async ({ username, password }) => {
@@ -45,19 +42,17 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const res = await axios.post('/api/auth/login', { username, password });
-      console.log('Login response:', res.data); // Debug log
       if (res.data.success) {
         setIsAuthenticated(true);
         setUser(res.data.user);
         setError(null);
-        await loadUser(); // Load user data after login
+        await loadUser();
         return true;
       } else {
         setError('Invalid credentials');
         return false;
       }
     } catch (err) {
-      console.error('Login error:', err.message, err.response?.data); // Debug log
       const errorMessage = err.response?.data?.error || err.message || 'Login failed';
       setError(errorMessage);
       return false;
@@ -79,7 +74,6 @@ export const AuthProvider = ({ children }) => {
         setError('Logout failed');
       }
     } catch (err) {
-      console.error('Logout error:', err.message, err.response?.data); // Debug log
       setError(err.response?.data?.error || err.message || 'Logout failed');
     } finally {
       setLoading(false);
@@ -90,16 +84,13 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Submitting registration to /pages/register', { firstName, lastName, email }); // Debug log
       const res = await axios.post('/api/auth/register', {
         first_name: firstName,
         last_name: lastName,
         email,
         password,
       });
-      console.log('Register response:', res.data);
       if (res.data.success) {
-        setError(null);
         router.push('/login');
         return true;
       } else {
@@ -107,8 +98,41 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (err) {
-      console.error('Register error:', err.message, err.response?.data);
       const errorMessage = err.response?.data?.error || err.message || 'Registration failed';
+      setError(errorMessage);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateProfile = async ({ firstName, lastName, email, password }, access_token) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/myself/update/`,
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password: password || '', // Always include password, default to empty string if undefined
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        setUser(res.data);
+        setUpdated(true);
+        return true;
+      }
+      return false;
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || err.message || 'Profile update failed';
       setError(errorMessage);
       return false;
     } finally {
@@ -123,11 +147,14 @@ export const AuthProvider = ({ children }) => {
         user,
         error,
         isAuthenticated,
+        updated,
         setIsAuthenticated,
         login,
         logout,
         loadUser,
         register,
+        setUpdated,
+        updateProfile,
       }}
     >
       {children}
